@@ -3,7 +3,7 @@ export interface LineChartData {
   values: number[];
 }
 
-export interface PieChartData {
+export interface PieChartItem {
   name: string;
   value: number;
 }
@@ -13,5 +13,11 @@ export interface DashboardData {
   activeSessions: number;
   revenue: number;
   lineChartData: LineChartData;
-  pieChartData: PieChartData[];
+  pieChartData: PieChartItem[];
+}
+
+export interface DashboardState {
+  data: DashboardData | null;
+  loading: boolean;
+  error: string | null;
 }

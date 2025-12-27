@@ -1,3 +1,4 @@
+import { ROUTES } from '@/routes/paths';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -10,17 +11,17 @@ const Sidebar: React.FC = () => {
       <nav className="mt-4">
         <ul>
           <li>
-            <Link to="/" className="block p-2 hover:bg-gray-700">
+            <Link to={ROUTES.DASHBOARD} className="block p-2 hover:bg-gray-700">
               Dashboard
             </Link>
           </li>
           <li>
-            <Link to="/settings" className="block p-2 hover:bg-gray-700">
+            <Link to={ROUTES.SETTINGS} className="block p-2 hover:bg-gray-700">
               Settings
             </Link>
           </li>
           <li>
-            <Link to="/login" className="block p-2 hover:bg-gray-700">
+            <Link to={ROUTES.LOGIN} className="block p-2 hover:bg-gray-700">
               Login
             </Link>
           </li>

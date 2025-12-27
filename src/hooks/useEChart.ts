@@ -8,7 +8,6 @@ const useECharts = (options: echarts.EChartsOption) => {
   useEffect(() => {
     if (!chartRef.current) return;
 
-    // init once
     if (!chartInstance.current) {
       chartInstance.current = echarts.init(chartRef.current);
     }

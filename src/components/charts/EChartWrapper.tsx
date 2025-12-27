@@ -18,12 +18,10 @@ const EChartWrapper: React.FC<EChartWrapperProps> = ({
   useEffect(() => {
     if (!chartRef.current) return;
 
-    // Init chart once
     if (!chartInstanceRef.current) {
       chartInstanceRef.current = echarts.init(chartRef.current);
     }
 
-    // Set / update option
     chartInstanceRef.current.setOption(option, true);
 
     const handleResize = () => {
@@ -37,7 +35,6 @@ const EChartWrapper: React.FC<EChartWrapperProps> = ({
     };
   }, [option]);
 
-  // Dispose on unmount
   useEffect(() => {
     return () => {
       chartInstanceRef.current?.dispose();

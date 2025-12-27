@@ -1,7 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
+import dashboardReducer from '../features/dashboard/dashboard.slice';
 
 const store = configureStore({
-  reducer: {},
+  reducer: {
+    dashboard: dashboardReducer,
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
