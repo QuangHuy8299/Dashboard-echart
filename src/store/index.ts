@@ -3,6 +3,7 @@ import dashboardReducer from '../features/dashboard/dashboard.slice';
 import { overviewReducer } from '../features/overview/overview.slice';
 import notificationsReducer from '@/features/notifications/notifications.slice';
 import { analyticsReducer } from '../features/analytics/analytics.slice';
+import { profileReducer } from '../features/profile/profile.slice';
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     overview: overviewReducer,
     notifications: notificationsReducer,
     analytics: analyticsReducer,
+    profile: profileReducer,
   },
 });
 

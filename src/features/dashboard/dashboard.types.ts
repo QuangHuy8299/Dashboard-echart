@@ -16,8 +16,11 @@ export interface DashboardData {
   pieChartData: PieChartItem[];
 }
 
+export type Theme = 'dark' | 'light' | 'system';
+
 export interface DashboardState {
   data: DashboardData | null;
   loading: boolean;
   error: string | null;
+  theme: Theme;
 }

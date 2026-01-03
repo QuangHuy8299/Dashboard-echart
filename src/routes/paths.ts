@@ -5,4 +5,5 @@ export const ROUTES = {
   SETTINGS: '/settings',
 
   DASHBOARD_ALIAS: '/dashboard',
+  PROFILE: '/profile',
 };

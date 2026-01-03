@@ -9,6 +9,7 @@ import PublicGuard from './guards/PublicGuard';
 import AuthLayout from '@/layout/AuthLayout';
 import OverviewPage from '@/pages/Overview';
 import AnalyticsPage from '@/pages/Analytics';
+import ProfilePage from '@/pages/Profile/ProfilePage';
 
 const AppRoutes = () => {
   return (
@@ -27,7 +28,7 @@ const AppRoutes = () => {
           <Route path="products" element={<div>Products Page</div>} />
           <Route path="orders" element={<div>Orders Page</div>} />
           <Route path="invoices" element={<div>Invoices Page</div>} />
-
+          <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
           <Route element={<RoleGuard roles={['user']} />}>
             <Route path="settings" element={<Settings />} />
           </Route>

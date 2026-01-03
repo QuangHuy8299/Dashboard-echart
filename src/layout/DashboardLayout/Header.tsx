@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   Search,
-  User, // Remove Bell import as it's inside Notifications component now
   LayoutDashboard,
   BarChart,
   Users,
@@ -10,12 +9,14 @@ import {
   FileText,
   Settings,
   CreditCard,
+  UserIcon,
+  LogOut,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ModeToggle } from '@/components/widgets/ModeToggle';
-import { Notifications } from '@/components/widgets/Notifications'; // Import new component
+import { Notifications } from '@/components/widgets/Notifications';
 import {
   CommandDialog,
   CommandEmpty,
@@ -25,10 +26,17 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/components/ui/command';
+import { ROUTES } from '@/routes/paths';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
-// ... keep existing searchData and search logic ...
 const searchData = [
-  // ... existing code ...
   {
     heading: 'Platform',
     items: [
@@ -58,7 +66,6 @@ const searchData = [
 ];
 
 const Header: React.FC = () => {
-  // ... keep existing hooks and logic ...
   const location = useLocation();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -122,7 +129,6 @@ const Header: React.FC = () => {
               <span>to search</span>
             </div>
 
-            {/* Mobile Trigger */}
             <Button
               variant="ghost"
               size="icon"
@@ -136,16 +142,43 @@ const Header: React.FC = () => {
           <div className="flex items-center gap-2">
             <ModeToggle />
 
-            {/* Replaced static Bell button with Notifications component */}
             <Notifications />
 
             <div className="h-8 w-[1px] bg-border mx-2" />
-            <Button variant="ghost" size="sm" className="gap-2 px-2">
-              <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center border">
-                <User className="h-4 w-4 text-primary" />
-              </div>
-              <span className="hidden sm:inline-block font-medium">Admin</span>
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-2 px-2 cursor-pointer"
+                >
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center border">
+                    <UserIcon className="h-4 w-4 text-primary" />
+                  </div>
+                  <span className="hidden sm:inline-block font-medium">
+                    Account
+                  </span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => navigate(ROUTES.PROFILE)}>
+                  <UserIcon className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="text-red-600"
+                  onClick={() => {
+                    /* Dispatch logout */
+                  }}
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </header>
