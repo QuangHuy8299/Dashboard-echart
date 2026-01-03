@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import dashboardReducer from '../features/dashboard/dashboard.slice';
+import { overviewReducer } from '../features/overview/overview.slice';
 
 const store = configureStore({
   reducer: {
     dashboard: dashboardReducer,
+    overview: overviewReducer,
   },
 });
 

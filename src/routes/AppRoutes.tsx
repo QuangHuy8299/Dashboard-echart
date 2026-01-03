@@ -7,7 +7,7 @@ import AuthGuard from './guards/Authguard';
 import RoleGuard from './guards/RoleGuard';
 import PublicGuard from './guards/PublicGuard';
 import AuthLayout from '@/layout/AuthLayout';
-import { DashboardPage } from '@/pages/Dashboard';
+import OverviewPage from '@/pages/Overview';
 
 const AppRoutes = () => {
   return (
@@ -20,7 +20,7 @@ const AppRoutes = () => {
 
       <Route element={<AuthGuard />}>
         <Route element={<DashboardLayout />}>
-          <Route index element={<DashboardPage />} />
+          <Route index element={<OverviewPage />} />
           <Route path="analytics" element={<div>Analytics Page</div>} />
           <Route path="customers" element={<div>Customers Page</div>} />
           <Route path="products" element={<div>Products Page</div>} />
