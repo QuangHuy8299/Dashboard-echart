@@ -8,14 +8,6 @@ import {
 } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import Badge from '@/components/ui/badge';
-import {
-  ArrowUpIcon,
-  ArrowDownIcon,
-  DollarSign,
-  ShoppingCart,
-  TrendingUp,
-  Target,
-} from 'lucide-react';
 import { RevenueChart } from '@/components/charts/RevenueChart';
 import { CategoryPieChart } from '@/components/charts/CategoryPieChart';
 import type {
@@ -24,7 +16,14 @@ import type {
   RevenueData,
 } from '@/features/overview/overview.types';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-
+import StatCard from '@/components/widgets/StatCard';
+import {
+  DollarSign,
+  ShoppingCart,
+  TrendingUp,
+  Target,
+  type LucideIcon, // Add this import
+} from 'lucide-react';
 interface OverviewViewProps {
   kpis: KPIMetric[];
   revenueData: RevenueData[];
@@ -34,7 +33,7 @@ interface OverviewViewProps {
   onRetry: () => void;
 }
 
-const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+const iconMap: Record<string, LucideIcon> = {
   DollarSign,
   ShoppingCart,
   TrendingUp,
@@ -111,39 +110,22 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
             ))
           : kpis.map((kpi) => {
               const Icon = iconMap[kpi.icon] || DollarSign;
+
+              const trendDirection =
+                kpi.changeType === 'increase' ? 'up' : 'down';
+
+              const formattedValue = formatValue(kpi.value, kpi.format);
+
               return (
-                <Card key={kpi.id}>
-                  <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                    <CardTitle className="text-sm font-medium">
-                      {kpi.label}
-                    </CardTitle>
-                    <Icon className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">
-                      {formatValue(kpi.value, kpi.format)}
-                    </div>
-                    <div className="flex items-center text-xs mt-1">
-                      {kpi.changeType === 'increase' ? (
-                        <ArrowUpIcon className="h-3 w-3 text-green-600 mr-1" />
-                      ) : (
-                        <ArrowDownIcon className="h-3 w-3 text-red-600 mr-1" />
-                      )}
-                      <span
-                        className={
-                          kpi.changeType === 'increase'
-                            ? 'text-green-600'
-                            : 'text-red-600'
-                        }
-                      >
-                        {Math.abs(kpi.change)}%
-                      </span>
-                      <span className="text-muted-foreground ml-1">
-                        from last month
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
+                <StatCard
+                  key={kpi.id}
+                  title={kpi.label}
+                  value={formattedValue}
+                  icon={Icon}
+                  trend={trendDirection}
+                  trendValue={`${Math.abs(kpi.change)}%`}
+                  description="from last month"
+                />
               );
             })}
       </div>

@@ -40,11 +40,10 @@ export const TopbarAvatar: React.FC<TopbarAvatarProps> = ({
           }`}
         >
           <Avatar className="h-8 w-8">
-            {src ? (
-              <AvatarImage src={src} alt={name} />
-            ) : (
-              <AvatarFallback>{name[0]}</AvatarFallback>
-            )}
+            <AvatarImage src={src} alt={name} />
+            <AvatarFallback>
+              {name ? name[0].toUpperCase() : 'U'}
+            </AvatarFallback>
           </Avatar>
           <span className="hidden sm:inline-block font-medium truncate">
             {name}

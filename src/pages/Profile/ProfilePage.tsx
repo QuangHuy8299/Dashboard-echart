@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hook';
 import { fetchProfile } from '@/features/profile/profile.slice';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -10,12 +10,20 @@ import PreferencesTab from './tabs/PreferencesTab';
 import ActivityTab from './tabs/ActivityTab';
 import AdminTab from './tabs/AdminTab';
 
-// Sub-components
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 const ProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
   const { isLoading, data } = useAppSelector((state) => state.profile);
   const { canViewAdminLogs } = usePermissions();
+
+  const [activeTab, setActiveTab] = useState('general');
 
   useEffect(() => {
     dispatch(fetchProfile());
@@ -38,8 +46,34 @@ const ProfilePage: React.FC = () => {
         </h2>
       </div>
 
-      <Tabs defaultValue="general" className="space-y-4">
-        <TabsList>
+      {/* 2. Bind Tabs to the state (value & onValueChange) */}
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="space-y-4"
+      >
+        {/* --- MOBILE VIEW: SELECT DROPDOWN --- */}
+        {/* "block md:hidden" means visible on mobile, hidden on desktop */}
+        <div className="block md:hidden w-full">
+          <Select value={activeTab} onValueChange={setActiveTab}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a tab" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="general">General</SelectItem>
+              <SelectItem value="security">Security</SelectItem>
+              <SelectItem value="preferences">Preferences</SelectItem>
+              <SelectItem value="activity">Activity</SelectItem>
+              {canViewAdminLogs && (
+                <SelectItem value="admin">Admin Controls</SelectItem>
+              )}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* --- DESKTOP VIEW: TABS LIST --- */}
+        {/* "hidden md:inline-flex" means hidden on mobile, visible on desktop */}
+        <TabsList className="hidden md:inline-flex">
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
           <TabsTrigger value="preferences">Preferences</TabsTrigger>
@@ -49,6 +83,7 @@ const ProfilePage: React.FC = () => {
           )}
         </TabsList>
 
+        {/* --- CONTENT (Shared by both) --- */}
         <TabsContent value="general" className="space-y-4">
           <GeneralTab profile={data} />
         </TabsContent>

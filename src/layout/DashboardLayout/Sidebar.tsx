@@ -7,6 +7,13 @@ import {
   GalleryVerticalEnd,
   Settings2,
   SquareTerminal,
+  LayoutDashboard, // Added
+  PieChart, // Added
+  Users, // Added
+  Package, // Added
+  ShoppingCart, // Added
+  FileText, // Added
+  CreditCard, // Added
 } from 'lucide-react';
 import { NavLink, useLocation } from 'react-router-dom';
 
@@ -61,8 +68,8 @@ const data = {
       url: '#',
       icon: SquareTerminal,
       items: [
-        { title: 'Overview', url: '/' },
-        { title: 'Analytics', url: 'analytics' },
+        { title: 'Overview', url: '/', icon: LayoutDashboard }, // Added Icon
+        { title: 'Analytics', url: 'analytics', icon: PieChart }, // Added Icon
       ],
     },
     {
@@ -70,24 +77,24 @@ const data = {
       url: '#',
       icon: Bot,
       items: [
-        { title: 'Customers', url: 'customers' },
-        { title: 'Products', url: 'products' },
-        { title: 'Orders', url: 'orders' },
+        { title: 'Customers', url: 'customers', icon: Users }, // Added Icon
+        { title: 'Products', url: 'products', icon: Package }, // Added Icon
+        { title: 'Orders', url: 'orders', icon: ShoppingCart }, // Added Icon
       ],
     },
     {
       title: 'Finance',
       url: '#',
       icon: BookOpen,
-      items: [{ title: 'Invoices', url: 'invoices' }],
+      items: [{ title: 'Invoices', url: 'invoices', icon: FileText }], // Added Icon
     },
     {
       title: 'Settings',
       url: '#',
       icon: Settings2,
       items: [
-        { title: 'General', url: 'settings' },
-        { title: 'Billing', url: '#' }, // Placeholder
+        { title: 'General', url: 'settings', icon: Settings2 }, // Added Icon
+        { title: 'Billing', url: '#', icon: CreditCard }, // Added Icon
       ],
     },
   ],
@@ -107,7 +114,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  {/* FIX: Use the Capitalized component variable */}
                   <TeamLogo className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
@@ -128,7 +134,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
             <SidebarMenu>
               {group.items.map((item) => {
-                // Compute a base path for comparison and link building
                 const basePath =
                   item.url === '/'
                     ? '/'
@@ -140,7 +145,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     (location.pathname === basePath ||
                       location.pathname.startsWith(`${basePath}/`))
                 );
-                const GroupIcon = group.icon;
+                // Use the specific item icon if available, otherwise fallback to group icon
+                const ItemIcon = item.icon || group.icon;
 
                 return (
                   <SidebarMenuItem key={item.title}>
@@ -151,7 +157,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     >
                       {item.url && item.url !== '#' ? (
                         <NavLink to={basePath}>
-                          {GroupIcon && <GroupIcon className="size-4" />}
+                          {ItemIcon && <ItemIcon className="size-4" />}
                           <span>{item.title}</span>
                         </NavLink>
                       ) : (
@@ -160,7 +166,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                           className="flex items-center gap-2 text-muted-foreground cursor-default"
                           aria-disabled
                         >
-                          {GroupIcon && <GroupIcon className="size-4" />}
+                          {ItemIcon && <ItemIcon className="size-4" />}
                           <span>{item.title}</span>
                         </button>
                       )}
@@ -184,7 +190,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 >
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarImage src={data.user.avatar} alt={data.user.name} />
-                    <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                    {/* Fixed: Ensure fallback is visible with bg-muted/50 */}
+                    <AvatarFallback className="rounded-lg bg-muted/50 text-foreground">
+                      CN
+                    </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">

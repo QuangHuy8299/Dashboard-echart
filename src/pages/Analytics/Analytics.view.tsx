@@ -10,15 +10,27 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import Badge from '@/components/ui/badge';
 import {
-  ArrowUpIcon,
-  ArrowDownIcon,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
   TrendingUp,
   TrendingDown,
   Minus,
+  DollarSign,
+  ShoppingCart,
+  Users,
+  Activity,
 } from 'lucide-react';
+
 import { SalesTrendChart } from '@/components/charts/SalesTrendChart';
 import { RegionBarChart } from '@/components/charts/RegionBarChart';
 import { FunnelChart } from '@/components/charts/FunnelChart';
+
 import type {
   SalesMetric,
   TimeSeriesPoint,
@@ -27,6 +39,7 @@ import type {
   CustomerSegment,
   ConversionFunnel,
 } from '@/features/analytics/analytics.types';
+import StatCard from '@/components/widgets/StatCard';
 
 interface AnalyticsViewProps {
   salesMetrics: SalesMetric[];
@@ -64,8 +77,19 @@ const getTrendIcon = (trend: ProductPerformance['trend']) => {
       return <TrendingDown className="h-4 w-4 text-red-600" />;
     case 'stable':
     default:
-      return <Minus className="h-4 w-4 text-gray-600" />;
+      return <Minus className="h-4 w-4 text-muted-foreground" />;
   }
+};
+
+// Helper to determine icon for StatCard based on label
+const getMetricIcon = (label: string) => {
+  const l = label.toLowerCase();
+  if (l.includes('revenue') || l.includes('sales') || l.includes('value'))
+    return DollarSign;
+  if (l.includes('order')) return ShoppingCart;
+  if (l.includes('customer') || l.includes('user') || l.includes('visit'))
+    return Users;
+  return Activity;
 };
 
 export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
@@ -88,7 +112,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
             <span>{error}</span>
             <button
               onClick={onRetry}
-              className="ml-4 px-4 py-2 bg-white text-red-600 rounded hover:bg-gray-100"
+              className="ml-4 px-4 py-2 bg-white text-red-600 rounded hover:bg-gray-100 font-medium text-sm"
             >
               Retry
             </button>
@@ -110,7 +134,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         </p>
       </div>
 
-      {/* Sales Metrics Cards */}
+      {/* Sales Metrics Cards (using StatCard) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {loading && salesMetrics.length === 0
           ? Array.from({ length: 4 }).map((_, i) => (
@@ -126,37 +150,21 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
               </Card>
             ))
           : salesMetrics.map((metric) => (
-              <Card key={metric.id}>
-                <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                  <CardTitle className="text-sm font-medium">
-                    {metric.label}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {formatValue(metric.currentValue, metric.format)}
-                  </div>
-                  <div className="flex items-center text-xs mt-1">
-                    {metric.changeType === 'increase' ? (
-                      <ArrowUpIcon className="h-3 w-3 text-green-600 mr-1" />
-                    ) : (
-                      <ArrowDownIcon className="h-3 w-3 text-red-600 mr-1" />
-                    )}
-                    <span
-                      className={
-                        metric.changeType === 'increase'
-                          ? 'text-green-600'
-                          : 'text-red-600'
-                      }
-                    >
-                      {Math.abs(metric.change)}%
-                    </span>
-                    <span className="text-muted-foreground ml-1">
-                      vs last period
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
+              <StatCard
+                key={metric.id}
+                title={metric.label}
+                value={formatValue(metric.currentValue, metric.format)}
+                icon={getMetricIcon(metric.label)}
+                trend={
+                  metric.changeType === 'increase'
+                    ? 'up'
+                    : metric.changeType === 'decrease'
+                    ? 'down'
+                    : 'neutral'
+                }
+                trendValue={`${Math.abs(metric.change)}%`}
+                description="vs last period"
+              />
             ))}
       </div>
 
@@ -214,7 +222,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         </Card>
       </div>
 
-      {/* Product Performance Table */}
+      {/* Product Performance Table (using shadcn Table) */}
       <Card>
         <CardHeader>
           <CardTitle>Top Products Performance</CardTitle>
@@ -230,41 +238,41 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
               ))}
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left py-3 px-4 font-medium">Product</th>
-                    <th className="text-left py-3 px-4 font-medium">
-                      Category
-                    </th>
-                    <th className="text-right py-3 px-4 font-medium">Units</th>
-                    <th className="text-right py-3 px-4 font-medium">
-                      Revenue
-                    </th>
-                    <th className="text-center py-3 px-4 font-medium">Trend</th>
-                  </tr>
-                </thead>
-                <tbody>
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Product</TableHead>
+                    <TableHead>Category</TableHead>
+                    <TableHead className="text-right">Units</TableHead>
+                    <TableHead className="text-right">Revenue</TableHead>
+                    <TableHead className="text-center">Trend</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {productPerformance.map((product) => (
-                    <tr key={product.id} className="border-b last:border-0">
-                      <td className="py-3 px-4 font-medium">{product.name}</td>
-                      <td className="py-3 px-4 text-muted-foreground">
+                    <TableRow key={product.id}>
+                      <TableCell className="font-medium">
+                        {product.name}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">
                         {product.category}
-                      </td>
-                      <td className="text-right py-3 px-4">
+                      </TableCell>
+                      <TableCell className="text-right">
                         {product.units.toLocaleString()}
-                      </td>
-                      <td className="text-right py-3 px-4">
+                      </TableCell>
+                      <TableCell className="text-right">
                         {formatValue(product.revenue, 'currency')}
-                      </td>
-                      <td className="text-center py-3 px-4">
-                        {getTrendIcon(product.trend)}
-                      </td>
-                    </tr>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <div className="flex justify-center">
+                          {getTrendIcon(product.trend)}
+                        </div>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           )}
         </CardContent>
@@ -290,7 +298,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
               {customerSegments.map((segment) => (
                 <div
                   key={segment.segment}
-                  className="flex items-center justify-between p-4 border rounded-lg"
+                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
                 >
                   <div className="flex-1">
                     <div className="flex items-center gap-3">
@@ -318,7 +326,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         </CardContent>
       </Card>
 
-      {/* Region Details Table */}
+      {/* Region Details Table (using shadcn Table) */}
       <Card>
         <CardHeader>
           <CardTitle>Regional Performance Details</CardTitle>
@@ -334,44 +342,46 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
               ))}
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left py-3 px-4 font-medium">Region</th>
-                    <th className="text-right py-3 px-4 font-medium">Sales</th>
-                    <th className="text-right py-3 px-4 font-medium">Orders</th>
-                    <th className="text-right py-3 px-4 font-medium">
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Region</TableHead>
+                    <TableHead className="text-right">Sales</TableHead>
+                    <TableHead className="text-right">Orders</TableHead>
+                    <TableHead className="text-right">
                       Avg Order Value
-                    </th>
-                    <th className="text-right py-3 px-4 font-medium">Growth</th>
-                  </tr>
-                </thead>
-                <tbody>
+                    </TableHead>
+                    <TableHead className="text-right">Growth</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {regionData.map((region) => (
-                    <tr key={region.region} className="border-b last:border-0">
-                      <td className="py-3 px-4 font-medium">{region.region}</td>
-                      <td className="text-right py-3 px-4">
+                    <TableRow key={region.region}>
+                      <TableCell className="font-medium">
+                        {region.region}
+                      </TableCell>
+                      <TableCell className="text-right">
                         {formatValue(region.sales, 'currency')}
-                      </td>
-                      <td className="text-right py-3 px-4">
+                      </TableCell>
+                      <TableCell className="text-right">
                         {region.orders.toLocaleString()}
-                      </td>
-                      <td className="text-right py-3 px-4">
+                      </TableCell>
+                      <TableCell className="text-right">
                         {formatValue(region.sales / region.orders, 'currency')}
-                      </td>
-                      <td className="text-right py-3 px-4">
+                      </TableCell>
+                      <TableCell className="text-right">
                         <Badge
                           variant={region.growth > 15 ? 'default' : 'secondary'}
                         >
                           {region.growth > 0 ? '+' : ''}
                           {region.growth.toFixed(1)}%
                         </Badge>
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           )}
         </CardContent>
