@@ -11,6 +11,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb';
+import { Toaster } from 'sonner';
 
 const DashboardLayout = () => {
   const location = useLocation();
@@ -59,6 +60,7 @@ const DashboardLayout = () => {
             <Outlet />
           </div>
         </main>
+        <Toaster position="bottom-right" richColors />
       </SidebarInset>
     </SidebarProvider>
   );

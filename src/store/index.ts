@@ -1,11 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import dashboardReducer from '../features/dashboard/dashboard.slice';
 import { overviewReducer } from '../features/overview/overview.slice';
+import notificationsReducer from '@/features/notifications/notifications.slice';
+import { analyticsReducer } from '../features/analytics/analytics.slice';
 
 const store = configureStore({
   reducer: {
     dashboard: dashboardReducer,
     overview: overviewReducer,
+    notifications: notificationsReducer,
+    analytics: analyticsReducer,
   },
 });
 

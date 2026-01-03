@@ -83,7 +83,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
   }
 
   return (
-    <div className="p-4 md:p-6 lg:p-8 space-y-6">
+    <div className="space-y-6">
       {/* Header */}
       <div>
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight">

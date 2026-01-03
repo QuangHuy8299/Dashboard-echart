@@ -8,6 +8,7 @@ import RoleGuard from './guards/RoleGuard';
 import PublicGuard from './guards/PublicGuard';
 import AuthLayout from '@/layout/AuthLayout';
 import OverviewPage from '@/pages/Overview';
+import AnalyticsPage from '@/pages/Analytics';
 
 const AppRoutes = () => {
   return (
@@ -21,7 +22,7 @@ const AppRoutes = () => {
       <Route element={<AuthGuard />}>
         <Route element={<DashboardLayout />}>
           <Route index element={<OverviewPage />} />
-          <Route path="analytics" element={<div>Analytics Page</div>} />
+          <Route path="analytics" element={<AnalyticsPage />} />
           <Route path="customers" element={<div>Customers Page</div>} />
           <Route path="products" element={<div>Products Page</div>} />
           <Route path="orders" element={<div>Orders Page</div>} />
