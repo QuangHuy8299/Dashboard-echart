@@ -15,12 +15,16 @@ const StatCard: React.FC<StatCardProps> = ({
 }) => {
   return (
     <div
-      className={`bg-white shadow-md rounded-lg p-4 flex items-center ${className}`}
+      className={`bg-card shadow-sm rounded-lg p-3 sm:p-4 flex items-center gap-3 ${className}`}
     >
-      {icon && <div className="mr-4">{icon}</div>}
-      <div>
-        <h2 className="text-lg font-semibold">{title}</h2>
-        <p className="text-2xl font-bold">{value}</p>
+      {icon && <div className="flex-shrink-0">{icon}</div>}
+      <div className="min-w-0">
+        <h2 className="text-sm sm:text-base md:text-lg font-semibold truncate">
+          {title}
+        </h2>
+        <p className="text-lg sm:text-2xl md:text-3xl font-bold truncate">
+          {value}
+        </p>
       </div>
     </div>
   );

@@ -21,6 +21,11 @@ const AppRoutes = () => {
       <Route element={<AuthGuard />}>
         <Route element={<DashboardLayout />}>
           <Route index element={<DashboardPage />} />
+          <Route path="analytics" element={<div>Analytics Page</div>} />
+          <Route path="customers" element={<div>Customers Page</div>} />
+          <Route path="products" element={<div>Products Page</div>} />
+          <Route path="orders" element={<div>Orders Page</div>} />
+          <Route path="invoices" element={<div>Invoices Page</div>} />
 
           <Route element={<RoleGuard roles={['user']} />}>
             <Route path="settings" element={<Settings />} />

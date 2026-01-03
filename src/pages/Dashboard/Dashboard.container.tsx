@@ -23,7 +23,7 @@ const DashboardContainer: React.FC = () => {
     return null;
   }
 
-  return <DashboardView data={data} />;
+  return <DashboardView />;
 };
 
 export default DashboardContainer;

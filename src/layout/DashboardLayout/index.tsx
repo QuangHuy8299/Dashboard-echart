@@ -1,21 +1,23 @@
 import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
 import Header from './Header';
-import Footer from './Footer';
+import { AppSidebar } from './Sidebar';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 
 const DashboardLayout = () => {
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
-      <Sidebar />
-
-      <div className="flex flex-1 flex-col h-screen overflow-hidden">
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        {/* Shared header component */}
         <Header />
-        <main className="flex-1 overflow-y-auto p-6 bg-slate-50/50 dark:bg-zinc-950/50">
-          <Outlet />
+
+        <main className="flex-1 overflow-y-auto bg-slate-50/50 dark:bg-zinc-950/50">
+          <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
+            <Outlet />
+          </div>
         </main>
-        <Footer />
-      </div>
-    </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 };
 

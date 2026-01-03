@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
+import { cn } from '@/lib/utils';
 
 interface EChartWrapperProps {
   option: echarts.EChartsOption;
@@ -30,6 +31,9 @@ const EChartWrapper: React.FC<EChartWrapperProps> = ({
 
     window.addEventListener('resize', handleResize);
 
+    // Trigger a resize after mount to ensure correct sizing
+    setTimeout(handleResize, 0);
+
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -45,8 +49,8 @@ const EChartWrapper: React.FC<EChartWrapperProps> = ({
   return (
     <div
       ref={chartRef}
-      style={{ width: '100%', height: '100%', ...style }}
-      className={className}
+      style={{ width: '100%', ...style }}
+      className={cn(className, 'w-full h-[200px] md:h-[260px] lg:h-[320px]')}
     />
   );
 };
