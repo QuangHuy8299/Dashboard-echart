@@ -15,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
+import Badge from '@/components/ui/badge';
 
 const ActivityTab: React.FC = () => {
   const { activities } = useAppSelector((state) => state.profile);

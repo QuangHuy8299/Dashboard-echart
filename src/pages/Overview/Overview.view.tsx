@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Badge } from '@/components/ui/badge';
+import Badge from '@/components/ui/badge';
 import {
   ArrowUpIcon,
   ArrowDownIcon,
@@ -160,7 +160,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           </CardHeader>
           <CardContent>
             {loading && revenueData.length === 0 ? (
-              <Skeleton className="h-[400px] w-full" />
+              <Skeleton className="h-72 md:h-80 lg:h-96 w-full" />
             ) : (
               <RevenueChart data={revenueData} />
             )}
@@ -177,7 +177,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           </CardHeader>
           <CardContent>
             {loading && categoryDistribution.length === 0 ? (
-              <Skeleton className="h-[400px] w-full" />
+              <Skeleton className="h-60 md:h-72 lg:h-96 w-full" />
             ) : (
               <CategoryPieChart data={categoryDistribution} />
             )}

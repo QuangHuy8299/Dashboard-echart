@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactECharts from 'echarts-for-react';
 import type { CategoryDistribution } from '@/features/overview/overview.types';
+import type { EChartsOption } from 'echarts';
+import ChartWrapper from './ChartWrapper';
 
 interface CategoryPieChartProps {
   data: CategoryDistribution[];
 }
 
 export const CategoryPieChart: React.FC<CategoryPieChartProps> = ({ data }) => {
-  const option = {
+  const option: EChartsOption = {
     tooltip: {
       trigger: 'item',
       formatter: '{a} <br/>{b}: ${c} ({d}%)',
@@ -53,12 +55,14 @@ export const CategoryPieChart: React.FC<CategoryPieChartProps> = ({ data }) => {
   };
 
   return (
-    <ReactECharts
-      option={option}
-      style={{ height: '400px', width: '100%' }}
-      notMerge={true}
-      lazyUpdate={true}
-      opts={{ renderer: 'svg' }}
-    />
+    <ChartWrapper className="h-60 md:h-72 lg:h-96">
+      <ReactECharts
+        option={option}
+        style={{ height: '100%', width: '100%' }}
+        notMerge={true}
+        lazyUpdate={true}
+        opts={{ renderer: 'svg' }}
+      />
+    </ChartWrapper>
   );
 };

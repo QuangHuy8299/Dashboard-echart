@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactECharts from 'echarts-for-react';
 import type { TimeSeriesPoint } from '@/features/analytics/analytics.types';
+import type { EChartsOption } from 'echarts';
+import ChartWrapper from './ChartWrapper';
 
 interface SalesTrendChartProps {
   salesData: TimeSeriesPoint[];
@@ -11,7 +13,7 @@ export const SalesTrendChart: React.FC<SalesTrendChartProps> = ({
   salesData,
   ordersData,
 }) => {
-  const option = {
+  const option: EChartsOption = {
     tooltip: {
       trigger: 'axis',
       axisPointer: {
@@ -91,12 +93,14 @@ export const SalesTrendChart: React.FC<SalesTrendChartProps> = ({
   };
 
   return (
-    <ReactECharts
-      option={option}
-      style={{ height: '400px', width: '100%' }}
-      notMerge={true}
-      lazyUpdate={true}
-      opts={{ renderer: 'svg' }}
-    />
+    <ChartWrapper className="h-60 md:h-72 lg:h-96">
+      <ReactECharts
+        option={option}
+        style={{ height: '100%', width: '100%' }}
+        notMerge={true}
+        lazyUpdate={true}
+        opts={{ renderer: 'svg' }}
+      />
+    </ChartWrapper>
   );
 };

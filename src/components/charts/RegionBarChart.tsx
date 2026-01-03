@@ -1,29 +1,19 @@
 import React from 'react';
 import ReactECharts from 'echarts-for-react';
 import type { RegionData } from '@/features/analytics/analytics.types';
+import type { EChartsOption } from 'echarts';
+import ChartWrapper from './ChartWrapper';
 
 interface RegionBarChartProps {
   data: RegionData[];
 }
 
-interface TooltipParams {
-  name: string;
-  value: number;
-  dataIndex: number;
-}
-
 export const RegionBarChart: React.FC<RegionBarChartProps> = ({ data }) => {
-  const option = {
+  const option: EChartsOption = {
     tooltip: {
       trigger: 'axis',
       axisPointer: {
         type: 'shadow',
-      },
-      formatter: (params: TooltipParams[]) => {
-        const item = params[0];
-        return `${item.name}<br/>Sales: $${(item.value / 1000).toFixed(
-          1
-        )}k<br/>Growth: ${data[item.dataIndex].growth}%`;
       },
     },
     grid: {
@@ -70,12 +60,14 @@ export const RegionBarChart: React.FC<RegionBarChartProps> = ({ data }) => {
   };
 
   return (
-    <ReactECharts
-      option={option}
-      style={{ height: '400px', width: '100%' }}
-      notMerge={true}
-      lazyUpdate={true}
-      opts={{ renderer: 'svg' }}
-    />
+    <ChartWrapper className="h-60 md:h-72 lg:h-80">
+      <ReactECharts
+        option={option}
+        style={{ height: '100%', width: '100%' }}
+        notMerge={true}
+        lazyUpdate={true}
+        opts={{ renderer: 'svg' }}
+      />
+    </ChartWrapper>
   );
 };

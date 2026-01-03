@@ -9,14 +9,15 @@ import {
   FileText,
   Settings,
   CreditCard,
-  UserIcon,
-  LogOut,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import Button from '@/components/ui/button';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ModeToggle } from '@/components/widgets/ModeToggle';
 import { Notifications } from '@/components/widgets/Notifications';
+import TopbarAvatar from '@/components/widgets/TopbarAvatar';
+import { useAppDispatch } from '@/store/hook';
+import { logout } from '@/features/auth/authSlice';
 import {
   CommandDialog,
   CommandEmpty,
@@ -26,15 +27,6 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/components/ui/command';
-import { ROUTES } from '@/routes/paths';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 
 const searchData = [
   {
@@ -68,6 +60,8 @@ const searchData = [
 const Header: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const [open, setOpen] = useState(false);
 
   const [isMac] = useState(() => {
@@ -145,40 +139,16 @@ const Header: React.FC = () => {
             <Notifications />
 
             <div className="h-8 w-[1px] bg-border mx-2" />
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="gap-2 px-2 cursor-pointer"
-                >
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center border">
-                    <UserIcon className="h-4 w-4 text-primary" />
-                  </div>
-                  <span className="hidden sm:inline-block font-medium">
-                    Account
-                  </span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => navigate(ROUTES.PROFILE)}>
-                  <UserIcon className="mr-2 h-4 w-4" />
-                  <span>Profile</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  className="text-red-600"
-                  onClick={() => {
-                    /* Dispatch logout */
-                  }}
-                >
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {/* Extracted topbar avatar for reuse and better typing */}
+            <TopbarAvatar
+              name="shadcn"
+              email="m@example.com"
+              src="/avatars/shadcn.jpg"
+              onLogout={() => {
+                dispatch(logout());
+                navigate('/login');
+              }}
+            />
           </div>
         </div>
       </header>

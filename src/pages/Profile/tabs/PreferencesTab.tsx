@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Button } from '@/components/ui/button';
+import Button from '@/components/ui/button';
 import { Moon, Sun, Monitor, Bell } from 'lucide-react';
 import { cn } from '@/lib/utils';
 

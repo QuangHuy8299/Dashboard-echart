@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactECharts from 'echarts-for-react';
 import type { RevenueData } from '@/features/overview/overview.types';
+import type { EChartsOption } from 'echarts';
+import ChartWrapper from './ChartWrapper';
 
 interface RevenueChartProps {
   data: RevenueData[];
 }
 
 export const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
-  const option = {
+  const option: EChartsOption = {
     tooltip: {
       trigger: 'axis',
       axisPointer: {
@@ -87,12 +89,14 @@ export const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
   };
 
   return (
-    <ReactECharts
-      option={option}
-      style={{ height: '400px', width: '100%' }}
-      notMerge={true}
-      lazyUpdate={true}
-      opts={{ renderer: 'svg' }}
-    />
+    <ChartWrapper className="h-72 md:h-80 lg:h-96">
+      <ReactECharts
+        option={option}
+        style={{ height: '100%', width: '100%' }}
+        notMerge={true}
+        lazyUpdate={true}
+        opts={{ renderer: 'svg' }}
+      />
+    </ChartWrapper>
   );
 };

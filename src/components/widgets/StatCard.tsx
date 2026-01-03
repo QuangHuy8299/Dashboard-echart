@@ -1,4 +1,5 @@
 import React from 'react';
+import { Card } from '@/components/ui/card';
 
 interface StatCardProps {
   title: string;
@@ -14,9 +15,7 @@ const StatCard: React.FC<StatCardProps> = ({
   className,
 }) => {
   return (
-    <div
-      className={`bg-card shadow-sm rounded-lg p-3 sm:p-4 flex items-center gap-3 ${className}`}
-    >
+    <Card className={`p-3 sm:p-4 flex items-center gap-3 ${className ?? ''}`}>
       {icon && <div className="flex-shrink-0">{icon}</div>}
       <div className="min-w-0">
         <h2 className="text-sm sm:text-base md:text-lg font-semibold truncate">
@@ -26,7 +25,7 @@ const StatCard: React.FC<StatCardProps> = ({
           {value}
         </p>
       </div>
-    </div>
+    </Card>
   );
 };
 
