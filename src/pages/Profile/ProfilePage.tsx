@@ -33,7 +33,7 @@ const ProfilePage: React.FC = () => {
     return (
       <div className="p-6 space-y-4">
         <Skeleton className="h-12 w-1/3" />
-        <Skeleton className="h-[400px] w-full" />
+        <Skeleton className="h-100 w-full" />
       </div>
     );
   }

@@ -103,7 +103,7 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-20 flex h-12 sm:h-14 md:h-16 w-full items-center justify-between border-b bg-background/95 px-4 sm:px-6 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-20 flex h-12 sm:h-14 md:h-16 w-full items-center justify-between border-b bg-background/95 px-4 sm:px-6 backdrop-blur supports-backdrop-filter:bg-background/60">
         <div className="flex items-center gap-4">
           <SidebarTrigger className="-ml-1 inline-flex" />
           <h1 className="text-sm font-semibold md:hidden">{formattedTitle}</h1>
@@ -137,7 +137,7 @@ const Header: React.FC = () => {
 
             <Notifications />
 
-            <div className="h-8 w-[1px] bg-border mx-2" />
+            <div className="h-8 w-px bg-border mx-2" />
             <TopbarAvatar
               name="shadcn"
               email="m@example.com"

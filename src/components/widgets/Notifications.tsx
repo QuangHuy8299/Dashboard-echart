@@ -117,7 +117,7 @@ export const Notifications: React.FC = () => {
           )}
         </div>
 
-        <ScrollArea className="h-[260px]">
+        <ScrollArea className="h-65">
           {isLoading && items.length === 0 ? (
             <div className="flex h-full items-center justify-center p-4">
               <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />

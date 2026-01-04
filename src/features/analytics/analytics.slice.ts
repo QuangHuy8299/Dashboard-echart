@@ -1,8 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { AnalyticsState } from './analytics.types';
-import { fetchAnalyticsData } from './analytics.thunks';
+
+// NOTE: The server-side fields previously stored here are now migrated to
+// RTK Query. This slice is reduced to UI-only state (filters, paging, small
+// UI flags). Keep the shape stable for components that still read these
+// selectors. Remove entirely after full migration.
 
 const initialState: AnalyticsState = {
+  // Keep empty defaults — server data is provided by RTK Query now
   salesMetrics: [],
   salesTrend: [],
   ordersTrend: [],
@@ -10,6 +15,7 @@ const initialState: AnalyticsState = {
   productPerformance: [],
   customerSegments: [],
   conversionFunnel: [],
+  // UI-only fields
   loading: false,
   error: null,
 };
@@ -22,29 +28,17 @@ const analyticsSlice = createSlice({
       state.error = null;
     },
     resetAnalytics: () => initialState,
+    // Keep UI-only reducers (filters, paging) here as needed
+    setLoading: (state, action: { payload: boolean }) => {
+      state.loading = action.payload;
+    },
+    setError: (state, action: { payload: string | null }) => {
+      state.error = action.payload;
+    },
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchAnalyticsData.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchAnalyticsData.fulfilled, (state, action) => {
-        state.loading = false;
-        state.salesMetrics = action.payload.salesMetrics;
-        state.salesTrend = action.payload.salesTrend;
-        state.ordersTrend = action.payload.ordersTrend;
-        state.regionData = action.payload.regionData;
-        state.productPerformance = action.payload.productPerformance;
-        state.customerSegments = action.payload.customerSegments;
-        state.conversionFunnel = action.payload.conversionFunnel;
-      })
-      .addCase(fetchAnalyticsData.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || 'Failed to fetch analytics data';
-      });
-  },
+  // Remove server-driven extraReducers; RTK Query owns server cache now
 });
 
-export const { clearError, resetAnalytics } = analyticsSlice.actions;
+export const { clearError, resetAnalytics, setLoading, setError } =
+  analyticsSlice.actions;
 export const analyticsReducer = analyticsSlice.reducer;

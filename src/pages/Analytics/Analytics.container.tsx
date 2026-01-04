@@ -1,39 +1,26 @@
-import React, { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '@/store/hook';
-import {
-  selectSalesMetrics,
-  selectSalesTrend,
-  selectOrdersTrend,
-  selectRegionData,
-  selectProductPerformance,
-  selectCustomerSegments,
-  selectConversionFunnel,
-  selectAnalyticsLoading,
-  selectAnalyticsError,
-} from '@/features/analytics/analytics.selectors';
-import { fetchAnalyticsData } from '@/features/analytics/analytics.thunks';
+import React from 'react';
+import { useAnalytics } from '@/hooks/data/useAnalytics';
 import { AnalyticsView } from './Analytics.view';
 
+// Use page-level hook to orchestrate the analytics data. This prevents
+// duplicate requests from independent widgets and keeps fetch logic out of
+// presentational components.
+
 export const AnalyticsContainer: React.FC = () => {
-  const dispatch = useAppDispatch();
+  const {
+    salesMetrics,
+    salesTrend,
+    ordersTrend,
+    regionData,
+    productPerformance,
+    customerSegments,
+    conversionFunnel,
+    isFetching,
+    error,
+    refetch,
+  } = useAnalytics();
 
-  const salesMetrics = useAppSelector(selectSalesMetrics);
-  const salesTrend = useAppSelector(selectSalesTrend);
-  const ordersTrend = useAppSelector(selectOrdersTrend);
-  const regionData = useAppSelector(selectRegionData);
-  const productPerformance = useAppSelector(selectProductPerformance);
-  const customerSegments = useAppSelector(selectCustomerSegments);
-  const conversionFunnel = useAppSelector(selectConversionFunnel);
-  const loading = useAppSelector(selectAnalyticsLoading);
-  const error = useAppSelector(selectAnalyticsError);
-
-  useEffect(() => {
-    dispatch(fetchAnalyticsData());
-  }, [dispatch]);
-
-  const handleRetry = () => {
-    dispatch(fetchAnalyticsData());
-  };
+  const handleRetry = () => refetch();
 
   return (
     <AnalyticsView
@@ -44,7 +31,7 @@ export const AnalyticsContainer: React.FC = () => {
       productPerformance={productPerformance}
       customerSegments={customerSegments}
       conversionFunnel={conversionFunnel}
-      loading={loading}
+      loading={isFetching}
       error={error}
       onRetry={handleRetry}
     />

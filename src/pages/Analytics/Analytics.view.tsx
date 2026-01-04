@@ -174,7 +174,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         </CardHeader>
         <CardContent>
           {loading && salesTrend.length === 0 ? (
-            <Skeleton className="h-[400px] w-full" />
+            <Skeleton className="h-100 w-full" />
           ) : (
             <SalesTrendChart salesData={salesTrend} ordersData={ordersTrend} />
           )}
@@ -191,7 +191,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
           </CardHeader>
           <CardContent>
             {loading && regionData.length === 0 ? (
-              <Skeleton className="h-[400px] w-full" />
+              <Skeleton className="h-100 w-full" />
             ) : (
               <RegionBarChart data={regionData} />
             )}
@@ -207,7 +207,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
           </CardHeader>
           <CardContent>
             {loading && conversionFunnel.length === 0 ? (
-              <Skeleton className="h-[400px] w-full" />
+              <Skeleton className="h-100 w-full" />
             ) : (
               <FunnelChart data={conversionFunnel} />
             )}
