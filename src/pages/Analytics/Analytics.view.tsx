@@ -81,7 +81,6 @@ const getTrendIcon = (trend: ProductPerformance['trend']) => {
   }
 };
 
-// Helper to determine icon for StatCard based on label
 const getMetricIcon = (label: string) => {
   const l = label.toLowerCase();
   if (l.includes('revenue') || l.includes('sales') || l.includes('value'))
@@ -124,7 +123,6 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div>
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
           Analytics Dashboard
@@ -134,7 +132,6 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         </p>
       </div>
 
-      {/* Sales Metrics Cards (using StatCard) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {loading && salesMetrics.length === 0
           ? Array.from({ length: 4 }).map((_, i) => (
@@ -168,7 +165,6 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
             ))}
       </div>
 
-      {/* Sales Trend Chart */}
       <Card>
         <CardHeader>
           <CardTitle>Sales & Orders Trend</CardTitle>
@@ -185,9 +181,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         </CardContent>
       </Card>
 
-      {/* Region & Funnel Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Region Performance */}
         <Card>
           <CardHeader>
             <CardTitle>Sales by Region</CardTitle>
@@ -204,7 +198,6 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
           </CardContent>
         </Card>
 
-        {/* Conversion Funnel */}
         <Card>
           <CardHeader>
             <CardTitle>Conversion Funnel</CardTitle>
@@ -222,7 +215,6 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         </Card>
       </div>
 
-      {/* Product Performance Table (using shadcn Table) */}
       <Card>
         <CardHeader>
           <CardTitle>Top Products Performance</CardTitle>
@@ -278,7 +270,6 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         </CardContent>
       </Card>
 
-      {/* Customer Segments */}
       <Card>
         <CardHeader>
           <CardTitle>Customer Segments</CardTitle>
@@ -326,7 +317,6 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         </CardContent>
       </Card>
 
-      {/* Region Details Table (using shadcn Table) */}
       <Card>
         <CardHeader>
           <CardTitle>Regional Performance Details</CardTitle>

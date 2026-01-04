@@ -10,20 +10,29 @@ import { Skeleton } from '@/components/ui/skeleton';
 import Badge from '@/components/ui/badge';
 import { RevenueChart } from '@/components/charts/RevenueChart';
 import { CategoryPieChart } from '@/components/charts/CategoryPieChart';
-import type {
-  CategoryDistribution,
-  KPIMetric,
-  RevenueData,
-} from '@/features/overview/overview.types';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import StatCard from '@/components/widgets/StatCard';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import {
   DollarSign,
   ShoppingCart,
   TrendingUp,
   Target,
-  type LucideIcon, // Add this import
+  type LucideIcon,
 } from 'lucide-react';
+import type {
+  CategoryDistribution,
+  KPIMetric,
+  RevenueData,
+} from '@/features/overview/overview.types';
+
 interface OverviewViewProps {
   kpis: KPIMetric[];
   revenueData: RevenueData[];
@@ -83,7 +92,6 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div>
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
           Dashboard Overview
@@ -93,7 +101,6 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
         </p>
       </div>
 
-      {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {loading && kpis.length === 0
           ? Array.from({ length: 4 }).map((_, i) => (
@@ -130,9 +137,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
             })}
       </div>
 
-      {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Revenue Chart */}
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>Revenue Trend</CardTitle>
@@ -149,7 +154,6 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           </CardContent>
         </Card>
 
-        {/* Category Distribution */}
         <Card>
           <CardHeader>
             <CardTitle>Sales by Category</CardTitle>
@@ -167,7 +171,6 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
         </Card>
       </div>
 
-      {/* Category Table */}
       <Card>
         <CardHeader>
           <CardTitle>Category Performance</CardTitle>
@@ -183,38 +186,29 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               ))}
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left py-3 px-4 font-medium">
-                      Category
-                    </th>
-                    <th className="text-right py-3 px-4 font-medium">
-                      Revenue
-                    </th>
-                    <th className="text-right py-3 px-4 font-medium">
-                      Percentage
-                    </th>
-                    <th className="text-right py-3 px-4 font-medium">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Category</TableHead>
+                    <TableHead className="text-right">Revenue</TableHead>
+                    <TableHead className="text-right">Percentage</TableHead>
+                    <TableHead className="text-right">Status</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {categoryDistribution.map((category) => (
-                    <tr
-                      key={category.category}
-                      className="border-b last:border-0"
-                    >
-                      <td className="py-3 px-4 font-medium">
+                    <TableRow key={category.category}>
+                      <TableCell className="font-medium">
                         {category.category}
-                      </td>
-                      <td className="text-right py-3 px-4">
+                      </TableCell>
+                      <TableCell className="text-right">
                         {formatValue(category.value, 'currency')}
-                      </td>
-                      <td className="text-right py-3 px-4">
+                      </TableCell>
+                      <TableCell className="text-right">
                         {category.percentage}%
-                      </td>
-                      <td className="text-right py-3 px-4">
+                      </TableCell>
+                      <TableCell className="text-right">
                         <Badge
                           variant={
                             category.percentage > 20 ? 'default' : 'secondary'
@@ -222,11 +216,11 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                         >
                           {category.percentage > 20 ? 'High' : 'Medium'}
                         </Badge>
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           )}
         </CardContent>

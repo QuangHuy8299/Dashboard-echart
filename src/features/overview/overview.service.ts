@@ -9,7 +9,6 @@ import type {
   RevenueData,
 } from './overview.types';
 
-// Simulate API delay
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const overviewService = {

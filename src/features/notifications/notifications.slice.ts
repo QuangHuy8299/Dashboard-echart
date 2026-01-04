@@ -23,7 +23,6 @@ export const fetchNotifications = createAsyncThunk<NotificationItem[]>(
       const response = await fetchNotificationsApi();
       return response;
     } catch {
-      // Fixed: Removed unused 'error' variable
       return rejectWithValue('Failed to fetch notifications');
     }
   }
@@ -32,7 +31,6 @@ export const fetchNotifications = createAsyncThunk<NotificationItem[]>(
 export const markAsRead = createAsyncThunk<string, string>(
   'notifications/markRead',
   async (id) => {
-    // Fixed: Removed unused '{ dispatch }' parameter
     await markReadApi([id]);
     return id;
   }

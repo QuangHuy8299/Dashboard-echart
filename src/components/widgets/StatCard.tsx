@@ -33,7 +33,6 @@ const StatCard: React.FC<StatCardProps> = ({
   trend,
   trendValue,
 }) => {
-  // Determine if value is a large number that needs formatting
   const rawValue =
     typeof value === 'string'
       ? parseFloat(value.replace(/[^0-9.-]+/g, ''))

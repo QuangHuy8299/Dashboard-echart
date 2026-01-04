@@ -17,7 +17,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 
-// Redux
 import { useAppDispatch, useAppSelector } from '@/store/hook';
 import {
   fetchNotifications,
@@ -37,26 +36,19 @@ export const Notifications: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
-  // Ref to track previous count for toast logic
   const prevUnreadCountRef = useRef(unreadCount);
 
-  // 1. Initial Fetch & Polling Optimization
   useEffect(() => {
-    // Initial fetch
     dispatch(fetchNotifications());
 
-    // Poll every 2 minutes (120000 ms)
     const intervalId = setInterval(() => {
       dispatch(fetchNotifications());
     }, 120000);
 
-    // Cleanup interval on unmount
     return () => clearInterval(intervalId);
   }, [dispatch]);
 
-  // 2. Toast Notification Logic
   useEffect(() => {
-    // If unread count increases, it means a new notification arrived
     if (unreadCount > prevUnreadCountRef.current) {
       toast.info('New Notification', {
         description: 'You have received a new update.',
@@ -94,7 +86,6 @@ export const Notifications: React.FC = () => {
         <Button variant="ghost" size="icon" className="relative">
           <Bell className="h-5 w-5 text-muted-foreground" />
 
-          {/* Badge: Shows count if > 0 */}
           {unreadCount > 0 && (
             <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground animate-in zoom-in ring-2 ring-background">
               {unreadCount > 9 ? '9+' : unreadCount}
@@ -104,7 +95,6 @@ export const Notifications: React.FC = () => {
       </PopoverTrigger>
 
       <PopoverContent className="w-80 p-0" align="end">
-        {/* Header with Read All */}
         <div className="flex items-center justify-between border-b px-4 py-3 bg-muted/30">
           <div className="flex items-center gap-2">
             <h4 className="font-semibold text-sm">Notifications</h4>
@@ -127,7 +117,6 @@ export const Notifications: React.FC = () => {
           )}
         </div>
 
-        {/* List: Fixed height to fit approx 3 items */}
         <ScrollArea className="h-[260px]">
           {isLoading && items.length === 0 ? (
             <div className="flex h-full items-center justify-center p-4">
@@ -183,7 +172,6 @@ export const Notifications: React.FC = () => {
           )}
         </ScrollArea>
 
-        {/* Footer: Load More */}
         {hasMore && (
           <div className="border-t bg-muted/20 p-1">
             <Button

@@ -25,7 +25,6 @@ const AdminTab: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Role Verification Section */}
       <Card className={isAdmin ? 'border-primary/50 bg-primary/5' : ''}>
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
@@ -91,8 +90,6 @@ const AdminTab: React.FC = () => {
           )}
         </CardContent>
       </Card>
-
-      {/* Admin Logs Table - Only rendered if Admin */}
       {isAdmin && (
         <Card>
           <CardHeader>
@@ -115,7 +112,6 @@ const AdminTab: React.FC = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {/* Mock Data for Admin Logs */}
                 <TableRow>
                   <TableCell className="font-medium">
                     admin@enterprise.com

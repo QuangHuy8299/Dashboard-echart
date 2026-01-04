@@ -111,10 +111,9 @@ const Header: React.FC = () => {
 
         <div className="flex items-center gap-4">
           <div className="w-full flex-1 md:w-auto md:flex-none">
-            {/* Desktop Trigger */}
             <div
               onClick={() => setOpen(true)}
-              className="hidden md:flex items-center gap-2 cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors px-2 py-1"
+              className="hidden md:flex items-baseline gap-2 cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors px-2 py-1"
             >
               <span>Press</span>
               <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
@@ -139,7 +138,6 @@ const Header: React.FC = () => {
             <Notifications />
 
             <div className="h-8 w-[1px] bg-border mx-2" />
-            {/* Extracted topbar avatar for reuse and better typing */}
             <TopbarAvatar
               name="shadcn"
               email="m@example.com"

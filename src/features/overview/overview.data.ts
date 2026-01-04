@@ -4,7 +4,6 @@ import type {
   RevenueData,
 } from './overview.types';
 
-// Generate 365 days of revenue data
 export const mockRevenueData: RevenueData[] = Array.from(
   { length: 365 },
   (_, i) => {

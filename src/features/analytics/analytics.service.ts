@@ -16,7 +16,6 @@ import type {
   ConversionFunnel,
 } from './analytics.types';
 
-// Simulate API delay
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const analyticsService = {

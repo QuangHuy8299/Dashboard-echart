@@ -48,7 +48,6 @@ export const selectAnalyticsError = createSelector(
   (analytics) => analytics.error
 );
 
-// Derived selectors
 export const selectTopProducts = createSelector(
   [selectProductPerformance],
   (products) => {

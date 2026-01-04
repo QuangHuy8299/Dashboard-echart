@@ -7,13 +7,13 @@ import {
   GalleryVerticalEnd,
   Settings2,
   SquareTerminal,
-  LayoutDashboard, // Added
-  PieChart, // Added
-  Users, // Added
-  Package, // Added
-  ShoppingCart, // Added
-  FileText, // Added
-  CreditCard, // Added
+  LayoutDashboard,
+  PieChart,
+  Users,
+  Package,
+  ShoppingCart,
+  FileText,
+  CreditCard,
 } from 'lucide-react';
 import { NavLink, useLocation } from 'react-router-dom';
 
@@ -38,7 +38,6 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ChevronsUpDown, LogOut } from 'lucide-react';
 
-// Menu Configuration
 const data = {
   user: {
     name: 'shadcn',
@@ -68,8 +67,8 @@ const data = {
       url: '#',
       icon: SquareTerminal,
       items: [
-        { title: 'Overview', url: '/', icon: LayoutDashboard }, // Added Icon
-        { title: 'Analytics', url: 'analytics', icon: PieChart }, // Added Icon
+        { title: 'Overview', url: '/', icon: LayoutDashboard },
+        { title: 'Analytics', url: 'analytics', icon: PieChart },
       ],
     },
     {
@@ -77,24 +76,24 @@ const data = {
       url: '#',
       icon: Bot,
       items: [
-        { title: 'Customers', url: 'customers', icon: Users }, // Added Icon
-        { title: 'Products', url: 'products', icon: Package }, // Added Icon
-        { title: 'Orders', url: 'orders', icon: ShoppingCart }, // Added Icon
+        { title: 'Customers', url: 'customers', icon: Users },
+        { title: 'Products', url: 'products', icon: Package },
+        { title: 'Orders', url: 'orders', icon: ShoppingCart },
       ],
     },
     {
       title: 'Finance',
       url: '#',
       icon: BookOpen,
-      items: [{ title: 'Invoices', url: 'invoices', icon: FileText }], // Added Icon
+      items: [{ title: 'Invoices', url: 'invoices', icon: FileText }],
     },
     {
       title: 'Settings',
       url: '#',
       icon: Settings2,
       items: [
-        { title: 'General', url: 'settings', icon: Settings2 }, // Added Icon
-        { title: 'Billing', url: '#', icon: CreditCard }, // Added Icon
+        { title: 'General', url: 'settings', icon: Settings2 },
+        { title: 'Billing', url: '#', icon: CreditCard },
       ],
     },
   ],
@@ -145,7 +144,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     (location.pathname === basePath ||
                       location.pathname.startsWith(`${basePath}/`))
                 );
-                // Use the specific item icon if available, otherwise fallback to group icon
                 const ItemIcon = item.icon || group.icon;
 
                 return (
@@ -190,7 +188,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 >
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarImage src={data.user.avatar} alt={data.user.name} />
-                    {/* Fixed: Ensure fallback is visible with bg-muted/50 */}
                     <AvatarFallback className="rounded-lg bg-muted/50 text-foreground">
                       CN
                     </AvatarFallback>

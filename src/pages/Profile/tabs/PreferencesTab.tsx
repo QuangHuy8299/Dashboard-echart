@@ -36,7 +36,6 @@ const PreferencesTab: React.FC = () => {
           <div className="space-y-2">
             <Label>Theme</Label>
             <div className="grid grid-cols-3 gap-2">
-              {/* Light Button */}
               <Button
                 variant="outline"
                 className={cn(
@@ -49,7 +48,6 @@ const PreferencesTab: React.FC = () => {
                 <Sun className="mr-2 h-4 w-4" /> Light
               </Button>
 
-              {/* Dark Button - FIXED */}
               <Button
                 variant="outline"
                 className={cn(
@@ -62,7 +60,6 @@ const PreferencesTab: React.FC = () => {
                 <Moon className="mr-2 h-4 w-4" /> Dark
               </Button>
 
-              {/* System Button - FIXED */}
               <Button
                 variant="outline"
                 className={cn(
@@ -79,7 +76,6 @@ const PreferencesTab: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* ... Notifications Card (Keep as is) ... */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

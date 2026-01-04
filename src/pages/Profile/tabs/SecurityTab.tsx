@@ -23,7 +23,6 @@ const SecurityTab: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="grid gap-6 md:grid-cols-2">
-        {/* Change Password */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -52,8 +51,6 @@ const SecurityTab: React.FC = () => {
             <Button>Update Password</Button>
           </CardFooter>
         </Card>
-
-        {/* 2FA & Security Settings */}
         <div className="space-y-6">
           <Card>
             <CardHeader>
@@ -105,7 +102,6 @@ const SecurityTab: React.FC = () => {
         </div>
       </div>
 
-      {/* Active Sessions List */}
       <Card>
         <CardHeader>
           <CardTitle>Active Sessions</CardTitle>

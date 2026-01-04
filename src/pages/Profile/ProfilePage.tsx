@@ -46,14 +46,11 @@ const ProfilePage: React.FC = () => {
         </h2>
       </div>
 
-      {/* 2. Bind Tabs to the state (value & onValueChange) */}
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
         className="space-y-4"
       >
-        {/* --- MOBILE VIEW: SELECT DROPDOWN --- */}
-        {/* "block md:hidden" means visible on mobile, hidden on desktop */}
         <div className="block md:hidden w-full">
           <Select value={activeTab} onValueChange={setActiveTab}>
             <SelectTrigger className="w-full">
@@ -71,8 +68,6 @@ const ProfilePage: React.FC = () => {
           </Select>
         </div>
 
-        {/* --- DESKTOP VIEW: TABS LIST --- */}
-        {/* "hidden md:inline-flex" means hidden on mobile, visible on desktop */}
         <TabsList className="hidden md:inline-flex">
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
@@ -83,7 +78,6 @@ const ProfilePage: React.FC = () => {
           )}
         </TabsList>
 
-        {/* --- CONTENT (Shared by both) --- */}
         <TabsContent value="general" className="space-y-4">
           <GeneralTab profile={data} />
         </TabsContent>

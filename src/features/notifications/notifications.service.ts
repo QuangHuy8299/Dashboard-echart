@@ -1,6 +1,5 @@
 import type { NotificationItem } from './notifications.types';
 
-// Mock Database
 let MOCK_DATA: NotificationItem[] = [
   {
     id: '1',
@@ -31,7 +30,6 @@ let MOCK_DATA: NotificationItem[] = [
   },
 ];
 
-// Helper to generate a random new notification
 const generateNewNotification = (): NotificationItem => ({
   id: Date.now().toString(),
   title: 'New Alert',
@@ -45,7 +43,6 @@ const generateNewNotification = (): NotificationItem => ({
 export const fetchNotificationsApi = async (): Promise<NotificationItem[]> => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      // Simulate a 30% chance of receiving a new notification on every poll
       const shouldAdd = Math.random() > 0.7;
 
       if (shouldAdd) {
@@ -54,7 +51,7 @@ export const fetchNotificationsApi = async (): Promise<NotificationItem[]> => {
       }
 
       resolve([...MOCK_DATA]);
-    }, 800); // 800ms API delay
+    }, 800);
   });
 };
 

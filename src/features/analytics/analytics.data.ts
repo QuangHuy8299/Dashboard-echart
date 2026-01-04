@@ -7,7 +7,6 @@ import type {
   ConversionFunnel,
 } from './analytics.types';
 
-// Generate 90 days of sales trend data
 export const mockSalesTrend: TimeSeriesPoint[] = Array.from(
   { length: 90 },
   (_, i) => {
@@ -28,7 +27,6 @@ export const mockSalesTrend: TimeSeriesPoint[] = Array.from(
   }
 );
 
-// Generate 90 days of orders trend data
 export const mockOrdersTrend: TimeSeriesPoint[] = Array.from(
   { length: 90 },
   (_, i) => {

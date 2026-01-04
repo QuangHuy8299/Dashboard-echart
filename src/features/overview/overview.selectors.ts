@@ -28,7 +28,6 @@ export const selectOverviewError = createSelector(
   (overview) => overview.error
 );
 
-// Derived selector - Last 30 days revenue
 export const selectLast30DaysRevenue = createSelector(
   [selectRevenueData],
   (revenueData) => {

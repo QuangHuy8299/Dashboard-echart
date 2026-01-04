@@ -2,7 +2,6 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { fetchDashboardData } from './dashboard.thunks';
 import type { DashboardState, Theme } from './dashboard.types';
 
-// Helper to initialize theme from local storage or default to 'system'
 const getInitialTheme = (): Theme => {
   if (typeof window !== 'undefined') {
     const savedTheme = localStorage.getItem('ui-theme');
@@ -21,7 +20,7 @@ const initialState: DashboardState = {
   data: null,
   loading: false,
   error: null,
-  theme: getInitialTheme(), // <--- Initialize here
+  theme: getInitialTheme(),
 };
 
 const dashboardSlice = createSlice({
