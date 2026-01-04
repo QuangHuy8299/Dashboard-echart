@@ -1,5 +1,4 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { fetchDashboardData } from './dashboard.thunks';
 import type { DashboardState, Theme } from './dashboard.types';
 
 const getInitialTheme = (): Theme => {
@@ -34,21 +33,6 @@ const dashboardSlice = createSlice({
       state.theme = action.payload;
       localStorage.setItem('ui-theme', action.payload);
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchDashboardData.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchDashboardData.fulfilled, (state, action) => {
-        state.loading = false;
-        state.data = action.payload;
-      })
-      .addCase(fetchDashboardData.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      });
   },
 });
 

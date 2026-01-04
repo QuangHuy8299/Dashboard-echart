@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import Button from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import type { UserProfile } from '@/features/profile/profile.types';
 import { Label } from '@/components/ui/label';
 
@@ -29,7 +29,7 @@ const GeneralTab: React.FC<Props> = ({ profile }) => {
         <CardContent className="flex flex-col items-center justify-center gap-4">
           <Avatar className="h-32 w-32 cursor-pointer hover:opacity-90 transition-opacity">
             <AvatarImage src={profile.avatarUrl} alt={profile.fullName} />
-            <AvatarFallback>{profile.fullName.charAt(0)}</AvatarFallback>
+            {/* <AvatarFallback>{profile.fullName.charAt(0)}</AvatarFallback> */}
           </Avatar>
           <Button variant="outline" size="sm">
             Change Avatar

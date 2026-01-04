@@ -1,7 +1,6 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hook';
 import { setTheme } from '@/features/dashboard/dashboard.slice';
-import { updatePreferences } from '@/features/profile/profile.slice';
 import {
   Card,
   CardContent,
@@ -14,11 +13,20 @@ import { Switch } from '@/components/ui/switch';
 import Button from '@/components/ui/button';
 import { Moon, Sun, Monitor, Bell } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import type { UserPreferences } from '@/features/profile/profile.types';
 
-const PreferencesTab: React.FC = () => {
+interface Props {
+  preferences: UserPreferences | undefined;
+}
+
+const PreferencesTab: React.FC<Props> = ({ preferences }) => {
   const dispatch = useAppDispatch();
   const { theme } = useAppSelector((state) => state.dashboard);
-  const { preferences } = useAppSelector((state) => state.profile);
+
+  const prefs = preferences || {
+    emailNotifications: true,
+    pushNotifications: true,
+  };
 
   return (
     <div className="grid gap-6 md:grid-cols-2">
@@ -88,10 +96,16 @@ const PreferencesTab: React.FC = () => {
             <Label htmlFor="email-notif">Email Notifications</Label>
             <Switch
               id="email-notif"
-              checked={preferences.emailNotifications}
-              onCheckedChange={(c) =>
-                dispatch(updatePreferences({ emailNotifications: c }))
-              }
+              checked={prefs.emailNotifications}
+              disabled
+            />
+          </div>
+          <div className="flex items-center justify-between space-x-2">
+            <Label htmlFor="push-notif">Push Notifications</Label>
+            <Switch
+              id="push-notif"
+              checked={prefs.pushNotifications}
+              disabled
             />
           </div>
         </CardContent>

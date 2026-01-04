@@ -1,40 +1,40 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
-  selectKPIMetrics,
-  selectRevenueData,
-  selectCategoryDistribution,
-  selectOverviewLoading,
-  selectOverviewError,
-} from '@/features/overview/overview.selectors';
-import { fetchOverviewData } from '@/features/overview/overview.thunks';
+  useKPIMetrics,
+  useRevenueData,
+  useCategoryDistribution,
+} from '@/hooks/data/useOverviewData';
 import { OverviewView } from './Overview.view';
-import { useAppDispatch, useAppSelector } from '@/store/hook';
 
 export const OverviewContainer: React.FC = () => {
-  const dispatch = useAppDispatch();
+  const kpis = useKPIMetrics();
+  const revenueData = useRevenueData();
+  const categoryDistribution = useCategoryDistribution();
 
-  const kpis = useAppSelector(selectKPIMetrics);
-  const revenueData = useAppSelector(selectRevenueData);
-  const categoryDistribution = useAppSelector(selectCategoryDistribution);
-  const loading = useAppSelector(selectOverviewLoading);
-  const error = useAppSelector(selectOverviewError);
+  const isLoading =
+    kpis.isFetching ||
+    revenueData.isFetching ||
+    categoryDistribution.isFetching;
 
-  useEffect(() => {
-    dispatch(fetchOverviewData());
-  }, [dispatch]);
+  const error = kpis.error || revenueData.error || categoryDistribution.error;
 
   const handleRetry = () => {
-    dispatch(fetchOverviewData());
+    kpis.refetch();
+    revenueData.refetch();
+    categoryDistribution.refetch();
   };
 
   return (
     <OverviewView
-      kpis={kpis}
-      revenueData={revenueData}
-      categoryDistribution={categoryDistribution}
-      loading={loading}
+      kpis={kpis.data}
+      revenueData={revenueData.data}
+      categoryDistribution={categoryDistribution.data}
+      loading={isLoading}
       error={error}
       onRetry={handleRetry}
+      kpisLoading={kpis.isFetching}
+      trendsLoading={revenueData.isFetching}
+      categoriesLoading={categoryDistribution.isFetching}
     />
   );
 };

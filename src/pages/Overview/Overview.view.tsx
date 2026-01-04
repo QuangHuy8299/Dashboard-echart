@@ -34,12 +34,15 @@ import type {
 } from '@/features/overview/overview.types';
 
 interface OverviewViewProps {
-  kpis: KPIMetric[];
-  revenueData: RevenueData[];
-  categoryDistribution: CategoryDistribution[];
+  kpis: KPIMetric[] | undefined;
+  revenueData: RevenueData[] | undefined;
+  categoryDistribution: CategoryDistribution[] | undefined;
   loading: boolean;
-  error: string | null;
+  error: any;
   onRetry: () => void;
+  kpisLoading?: boolean;
+  trendsLoading?: boolean;
+  categoriesLoading?: boolean;
 }
 
 const iconMap: Record<string, LucideIcon> = {

@@ -10,12 +10,6 @@ import {
   resetFilters,
 } from '@/features/analytics/analytics.filters';
 
-/**
- * Analytics Filters Hook
- * - Provides access to and mutation of analytics filter state
- * - Automatically triggers refetching of affected queries
- * - Ensures efficient updates (only related queries refetch)
- */
 export function useAnalyticsFilters() {
   const dispatch = useAppDispatch();
   const filters = useAppSelector((state) => state.analyticsFilters);

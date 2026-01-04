@@ -7,6 +7,18 @@ import type {
   CustomerSegment,
   ConversionFunnel,
 } from '@/features/analytics/analytics.types';
+import {
+  mapProductsToSalesMetrics,
+  generateSalesTrend,
+  generateOrdersTrend,
+  mapProductsToRegionData,
+  mapProductsToProductPerformance,
+  mapUsersToCustomerSegments,
+  generateConversionFunnel,
+  type DummyProductsResponse,
+  type DummyCartsResponse,
+  type DummyUsersResponse,
+} from './analytics.mappers';
 
 export interface AnalyticsQueryParams {
   dateRangeStart?: string;
@@ -18,30 +30,23 @@ export interface AnalyticsQueryParams {
 
 export const analyticsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    // Sales Metrics - GET /analytics/metrics
-    // Returns: KPI numbers (Total Sales, Avg Order Value, Conversion Rate, etc.)
     getSalesMetrics: build.query<SalesMetric[], void>({
-      query: () => '/analytics/metrics',
+      query: () => '/products?limit=100',
+      transformResponse: (response: DummyProductsResponse): SalesMetric[] => {
+        return mapProductsToSalesMetrics(response);
+      },
       serializeQueryArgs: ({ endpointName }) => endpointName,
       providesTags: [{ type: 'Analytics', id: 'METRICS' }],
-      keepUnusedDataFor: 300, // KPIs are stable - cache for 5 minutes
+      keepUnusedDataFor: 300,
     }),
 
-    // Sales Trend - GET /analytics/trends/sales?dateStart=...&dateEnd=...
-    // Returns: Time series of sales volume
     getSalesTrend: build.query<
       TimeSeriesPoint[],
       AnalyticsQueryParams | undefined
     >({
-      query: (params) => {
-        const queryString = new URLSearchParams();
-        if (params?.dateRangeStart)
-          queryString.append('dateStart', params.dateRangeStart);
-        if (params?.dateRangeEnd)
-          queryString.append('dateEnd', params.dateRangeEnd);
-        return `/analytics/trends/sales${
-          queryString.toString() ? `?${queryString}` : ''
-        }`;
+      query: () => `/carts?limit=100`,
+      transformResponse: (response: DummyCartsResponse): TimeSeriesPoint[] => {
+        return generateSalesTrend(response);
       },
       serializeQueryArgs: ({ endpointName, queryArgs }) => ({
         endpointName,
@@ -49,24 +54,16 @@ export const analyticsApi = baseApi.injectEndpoints({
         dateEnd: queryArgs?.dateRangeEnd,
       }),
       providesTags: [{ type: 'Analytics', id: 'SALES_TREND' }],
-      keepUnusedDataFor: 120, // Trends change more frequently - cache for 2 minutes
+      keepUnusedDataFor: 120,
     }),
 
-    // Orders Trend - GET /analytics/trends/orders?dateStart=...&dateEnd=...
-    // Returns: Time series of order volume
     getOrdersTrend: build.query<
       TimeSeriesPoint[],
       AnalyticsQueryParams | undefined
     >({
-      query: (params) => {
-        const queryString = new URLSearchParams();
-        if (params?.dateRangeStart)
-          queryString.append('dateStart', params.dateRangeStart);
-        if (params?.dateRangeEnd)
-          queryString.append('dateEnd', params.dateRangeEnd);
-        return `/analytics/trends/orders${
-          queryString.toString() ? `?${queryString}` : ''
-        }`;
+      query: () => `/carts?limit=100`,
+      transformResponse: (response: DummyCartsResponse): TimeSeriesPoint[] => {
+        return generateOrdersTrend(response);
       },
       serializeQueryArgs: ({ endpointName, queryArgs }) => ({
         endpointName,
@@ -77,36 +74,28 @@ export const analyticsApi = baseApi.injectEndpoints({
       keepUnusedDataFor: 120,
     }),
 
-    // Region Data - GET /analytics/regions?region=...
-    // Returns: Sales breakdown by geographic region
     getRegionData: build.query<RegionData[], AnalyticsQueryParams | undefined>({
-      query: (params) => {
-        const queryString = new URLSearchParams();
-        if (params?.region) queryString.append('region', params.region);
-        return `/analytics/regions${
-          queryString.toString() ? `?${queryString}` : ''
-        }`;
+      query: () => `/products?limit=100`,
+      transformResponse: (response: DummyProductsResponse): RegionData[] => {
+        return mapProductsToRegionData(response);
       },
       serializeQueryArgs: ({ endpointName, queryArgs }) => ({
         endpointName,
         region: queryArgs?.region,
       }),
       providesTags: [{ type: 'Analytics', id: 'REGION_DATA' }],
-      keepUnusedDataFor: 180, // Weekly changes - cache for 3 minutes
+      keepUnusedDataFor: 180,
     }),
 
-    // Product Performance - GET /analytics/products?category=...
-    // Returns: Product sales metrics, units sold, trends
     getProductPerformance: build.query<
       ProductPerformance[],
       AnalyticsQueryParams | undefined
     >({
-      query: (params) => {
-        const queryString = new URLSearchParams();
-        if (params?.category) queryString.append('category', params.category);
-        return `/analytics/products${
-          queryString.toString() ? `?${queryString}` : ''
-        }`;
+      query: () => `/products?limit=100`,
+      transformResponse: (
+        response: DummyProductsResponse
+      ): ProductPerformance[] => {
+        return mapProductsToProductPerformance(response);
       },
       serializeQueryArgs: ({ endpointName, queryArgs }) => ({
         endpointName,
@@ -116,18 +105,13 @@ export const analyticsApi = baseApi.injectEndpoints({
       keepUnusedDataFor: 180,
     }),
 
-    // Customer Segments - GET /analytics/segments?segment=...
-    // Returns: Revenue breakdown by customer type (Premium, Regular, Occasional, New)
     getCustomerSegments: build.query<
       CustomerSegment[],
       AnalyticsQueryParams | undefined
     >({
-      query: (params) => {
-        const queryString = new URLSearchParams();
-        if (params?.segment) queryString.append('segment', params.segment);
-        return `/analytics/segments${
-          queryString.toString() ? `?${queryString}` : ''
-        }`;
+      query: () => `/users?limit=100`,
+      transformResponse: (response: DummyUsersResponse): CustomerSegment[] => {
+        return mapUsersToCustomerSegments(response);
       },
       serializeQueryArgs: ({ endpointName, queryArgs }) => ({
         endpointName,
@@ -137,13 +121,41 @@ export const analyticsApi = baseApi.injectEndpoints({
       keepUnusedDataFor: 180,
     }),
 
-    // Conversion Funnel - GET /analytics/funnel
-    // Returns: Visitor-to-purchase conversion stages with counts
     getConversionFunnel: build.query<ConversionFunnel[], void>({
-      query: () => '/analytics/funnel',
+      queryFn: async (_arg, _queryApi, _extraOptions, baseQuery) => {
+        try {
+          const usersResult = await baseQuery('/users?limit=100');
+          const cartsResult = await baseQuery('/carts?limit=100');
+
+          if (usersResult.error) {
+            return {
+              error: usersResult.error,
+            };
+          }
+
+          if (cartsResult.error) {
+            return {
+              error: cartsResult.error,
+            };
+          }
+
+          const usersData = usersResult.data as DummyUsersResponse;
+          const cartsData = cartsResult.data as DummyCartsResponse;
+          const funnel = generateConversionFunnel(usersData, cartsData);
+
+          return { data: funnel };
+        } catch {
+          return {
+            error: {
+              status: 'CUSTOM_ERROR' as const,
+              error: 'Failed to fetch conversion funnel data',
+            },
+          };
+        }
+      },
       serializeQueryArgs: ({ endpointName }) => endpointName,
       providesTags: [{ type: 'Analytics', id: 'FUNNEL' }],
-      keepUnusedDataFor: 300, // Stable KPI - cache for 5 minutes
+      keepUnusedDataFor: 300,
     }),
   }),
   overrideExisting: false,

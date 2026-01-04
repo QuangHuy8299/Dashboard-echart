@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { OverviewState } from './overview.types';
-import { fetchOverviewData } from './overview.thunks';
 
 const initialState: OverviewState = {
   kpis: [],
@@ -17,23 +16,6 @@ const overviewSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchOverviewData.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchOverviewData.fulfilled, (state, action) => {
-        state.loading = false;
-        state.kpis = action.payload.kpis;
-        state.revenueData = action.payload.revenueData;
-        state.categoryDistribution = action.payload.categoryDistribution;
-      })
-      .addCase(fetchOverviewData.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || 'Failed to fetch overview data';
-      });
   },
 });
 

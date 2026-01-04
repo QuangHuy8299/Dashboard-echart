@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@/store/hook';
-import { fetchProfile } from '@/features/profile/profile.slice';
+import React, { useState } from 'react';
+import {
+  useProfileDetails,
+  useActivityLogs,
+  usePreferences,
+} from '@/hooks/data/useProfileData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
 import { usePermissions } from '@/hooks/usePermissions';
@@ -19,17 +22,17 @@ import {
 } from '@/components/ui/select';
 
 const ProfilePage: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const { isLoading, data } = useAppSelector((state) => state.profile);
+  const profile = useProfileDetails();
+  const activities = useActivityLogs();
+  const preferences = usePreferences();
   const { canViewAdminLogs } = usePermissions();
 
   const [activeTab, setActiveTab] = useState('general');
 
-  useEffect(() => {
-    dispatch(fetchProfile());
-  }, [dispatch]);
+  const isLoading =
+    profile.isFetching || activities.isFetching || preferences.isFetching;
 
-  if (isLoading && !data) {
+  if (isLoading && !profile.data) {
     return (
       <div className="p-6 space-y-4">
         <Skeleton className="h-12 w-1/3" />
@@ -79,7 +82,7 @@ const ProfilePage: React.FC = () => {
         </TabsList>
 
         <TabsContent value="general" className="space-y-4">
-          <GeneralTab profile={data} />
+          <GeneralTab profile={profile.data} />
         </TabsContent>
 
         <TabsContent value="security" className="space-y-4">
@@ -87,11 +90,14 @@ const ProfilePage: React.FC = () => {
         </TabsContent>
 
         <TabsContent value="preferences" className="space-y-4">
-          <PreferencesTab />
+          <PreferencesTab preferences={preferences.data} />
         </TabsContent>
 
         <TabsContent value="activity" className="space-y-4">
-          <ActivityTab />
+          <ActivityTab
+            activities={activities.data}
+            loading={activities.isFetching}
+          />
         </TabsContent>
 
         {canViewAdminLogs && (

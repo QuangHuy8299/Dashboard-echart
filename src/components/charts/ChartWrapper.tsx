@@ -6,11 +6,6 @@ interface ChartWrapperProps {
   'data-testid'?: string;
 }
 
-/**
- * A responsive container for charts. Controls height via Tailwind utility classes
- * so we avoid inline styles and make charts resize naturally when the container
- * changes size.
- */
 export const ChartWrapper: React.FC<ChartWrapperProps> = ({
   children,
   className = 'h-64 md:h-80 lg:h-96',
