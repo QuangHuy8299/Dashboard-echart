@@ -3,7 +3,7 @@ import { baseApi } from '../services/api';
 import dashboardReducer from '../features/dashboard/dashboard.slice';
 import { overviewReducer } from '../features/overview/overview.slice';
 import notificationsReducer from '@/features/notifications/notifications.slice';
-import { analyticsReducer } from '../features/analytics/analytics.slice';
+import { analyticsFiltersReducer } from '../features/analytics/analytics.filters';
 import { profileReducer } from '../features/profile/profile.slice';
 
 const store = configureStore({
@@ -12,7 +12,7 @@ const store = configureStore({
     dashboard: dashboardReducer,
     overview: overviewReducer,
     notifications: notificationsReducer,
-    analytics: analyticsReducer,
+    analyticsFilters: analyticsFiltersReducer,
     profile: profileReducer,
   },
   middleware: (getDefault) => getDefault().concat(baseApi.middleware),

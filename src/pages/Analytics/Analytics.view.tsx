@@ -52,6 +52,12 @@ interface AnalyticsViewProps {
   loading: boolean;
   error: string | null;
   onRetry: () => void;
+  metricsLoading?: boolean;
+  trendsLoading?: boolean;
+  regionsLoading?: boolean;
+  productsLoading?: boolean;
+  segmentsLoading?: boolean;
+  funnelLoading?: boolean;
 }
 
 const formatValue = (value: number, format: SalesMetric['format']): string => {
@@ -102,6 +108,12 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
   loading,
   error,
   onRetry,
+  metricsLoading,
+  trendsLoading,
+  regionsLoading,
+  productsLoading,
+  segmentsLoading,
+  funnelLoading,
 }) => {
   if (error) {
     return (
@@ -133,7 +145,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {loading && salesMetrics.length === 0
+        {(metricsLoading ?? loading) && salesMetrics.length === 0
           ? Array.from({ length: 4 }).map((_, i) => (
               <Card key={i}>
                 <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
@@ -141,8 +153,8 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                   <Skeleton className="h-4 w-4 rounded" />
                 </CardHeader>
                 <CardContent>
-                  <Skeleton className="h-8 w-32 mb-2" />
-                  <Skeleton className="h-3 w-20" />
+                  <Skeleton className="h-8 w-20 mb-2" />
+                  <Skeleton className="h-4 w-16" />
                 </CardContent>
               </Card>
             ))
@@ -173,7 +185,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {loading && salesTrend.length === 0 ? (
+          {(trendsLoading ?? loading) && salesTrend.length === 0 ? (
             <Skeleton className="h-100 w-full" />
           ) : (
             <SalesTrendChart salesData={salesTrend} ordersData={ordersTrend} />
@@ -190,7 +202,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {loading && regionData.length === 0 ? (
+            {(regionsLoading ?? loading) && regionData.length === 0 ? (
               <Skeleton className="h-100 w-full" />
             ) : (
               <RegionBarChart data={regionData} />
@@ -206,7 +218,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {loading && conversionFunnel.length === 0 ? (
+            {(funnelLoading ?? loading) && conversionFunnel.length === 0 ? (
               <Skeleton className="h-100 w-full" />
             ) : (
               <FunnelChart data={conversionFunnel} />
@@ -223,7 +235,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {loading && productPerformance.length === 0 ? (
+          {(productsLoading ?? loading) && productPerformance.length === 0 ? (
             <div className="space-y-2">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Skeleton key={i} className="h-12 w-full" />
@@ -278,7 +290,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {loading && customerSegments.length === 0 ? (
+          {(segmentsLoading ?? loading) && customerSegments.length === 0 ? (
             <div className="space-y-2">
               {Array.from({ length: 4 }).map((_, i) => (
                 <Skeleton key={i} className="h-16 w-full" />
@@ -325,7 +337,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {loading && regionData.length === 0 ? (
+          {(regionsLoading ?? loading) && regionData.length === 0 ? (
             <div className="space-y-2">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Skeleton key={i} className="h-12 w-full" />
